@@ -20,7 +20,7 @@ int main()
     ball.setFillColor(sf::Color(255, 255, 255));
 
     sf::Vector2f position = {10, 350};
-    float x = 10;
+    float yStart = 350;
 
     while (window.isOpen())
     {
@@ -37,23 +37,20 @@ int main()
 
         const float dt = clock.restart().asSeconds();
         time += dt;
-        const float wavePhase = time * float(2 * M_PI);
-        x += speedX * dt;
-        float y = amplitudeY * std::sin(wavePhase / periodY);
-        sf::Vector2f offset = {x, y};
+        const float wavePhase = std::sin(time * float(2 * M_PI)/periodY);
+        position.x += speedX * dt;
+        position.y = yStart + amplitudeY * wavePhase;
 
-        if ((position.x + x + 2 * BALL_SIZE >= WINDOW_WIDTH) && (speedX > 0))
+        if ((position.x+ 2 * BALL_SIZE >= WINDOW_WIDTH) && (speedX > 0))
         {
             speedX = -speedX;
         }
-        if ((position.x + x <= 0) && (speedX < 0))
+        if ((position.x <= 0) && (speedX < 0))
         {
             speedX = -speedX;
-            position.x = (position.x + x) * 2.f;
         }
 
-        ball.setPosition(position + offset);
-        sf::Vector2f position = ball.getPosition();
+        ball.setPosition(position);
 
         window.clear();
         window.draw(ball);
