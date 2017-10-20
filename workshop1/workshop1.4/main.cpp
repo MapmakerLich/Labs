@@ -23,12 +23,12 @@ struct Laser
 
 void init(Cat &cat, Laser &laser)
 {
-    cat.texture.loadFromFile("./workshop1.4/cat.png");
+    cat.texture.loadFromFile("./cat.png");
     cat.sprite.setTexture(cat.texture);
     cat.sprite.setOrigin(cat.texture.getSize().x / 2, cat.texture.getSize().y / 2);
     cat.position = {400, 300};
 
-    laser.texture.loadFromFile("./workshop1.4/laser.png");
+    laser.texture.loadFromFile("./laser.png");
     laser.sprite.setTexture(laser.texture);
     laser.sprite.setOrigin(laser.texture.getSize().x / 2, laser.texture.getSize().y / 2);
 }
