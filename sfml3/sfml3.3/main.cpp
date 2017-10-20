@@ -103,10 +103,10 @@ void pollEvents(sf::RenderWindow &window, sf::Vector2f &mousePosition)
 
 void update(const sf::Vector2f &mousePosition, Eye &leftEye, Eye &rightEye)
 {
-    const sf::Vector2f whiteRadius = {10.f, 30.f};
-    const sf::Vector2f blackRadius = {4.f, 10.f};
-    const float isInLeftEye = checkCursorInEye(mousePosition, leftEye.white.getPosition(), whiteRadius.x, whiteRadius.y);
-    const float isInRightEye = checkCursorInEye(mousePosition, rightEye.white.getPosition(), whiteRadius.x, whiteRadius.y);
+    const sf::Vector2f moveRadius = {30.f, 50.f};
+    const sf::Vector2f blackRadius = {10.f, 20.f};
+    const float isInLeftEye = checkCursorInEye(mousePosition, leftEye.white.getPosition(), moveRadius.x, moveRadius.y);
+    const float isInRightEye = checkCursorInEye(mousePosition, rightEye.white.getPosition(), moveRadius.x, moveRadius.y);
 
     if (isInLeftEye > 1.f)
     {
