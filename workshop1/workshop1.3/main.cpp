@@ -10,7 +10,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Cat");
 
     sf::Texture texture;
-    texture.loadFromFile("./workshop1.3/cat.png");
+    texture.loadFromFile("./cat.png");
 
     sf::Sprite sprite;
     sprite.setTexture(texture);
