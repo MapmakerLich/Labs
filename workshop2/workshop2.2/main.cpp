@@ -6,7 +6,7 @@
 
 struct Ball
 {
-    sf::CircleShape ball{40};
+    sf::CircleShape ball;
     sf::Vector2f position;
     sf::Vector2f speed;
 };
@@ -21,34 +21,8 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
     window.display();
 }
 
-sf::Vector2f getImpulse(Ball (&balls)[5])
-{
-    sf::Vector2f sum = {0, 0};
-    for (int i = 0; i < std::size(balls); ++i)
-    {
-        sum += balls[i].speed;
-    }
-    return sum;
-}
 
-bool areFuzzyEqual(float a, float b)
-{
-    constexpr float tolerance = 0.01f;
-    const bool areEqual = (std::abs(a - b) < tolerance);
-
-    return areEqual;
-}
-
-bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b)
-{
-    const bool areXEqual = areFuzzyEqual(a.x, b.x);
-    const bool areYEqual = areFuzzyEqual(a.y, b.y);
-    const bool areEqual = ((areXEqual) && (areYEqual));
-
-    return areEqual;
-}
-
-void update(Ball (&balls)[5], const float deltaTime)
+void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
@@ -74,8 +48,6 @@ void update(Ball (&balls)[5], const float deltaTime)
 
         balls[i].ball.setPosition(balls[i].position);
     }
-    
-    sf::Vector2f oldImpulse = getImpulse(balls);
 
     for (int fi = 0; fi < std::size(balls); ++fi)
     {
@@ -92,9 +64,6 @@ void update(Ball (&balls)[5], const float deltaTime)
             }
         }
     }
-
-    sf::Vector2f newImpulse = getImpulse(balls);
-    assert(areVectorsFuzzyEqual(oldImpulse, newImpulse));
 }
 
 
@@ -105,6 +74,7 @@ int main()
 
     constexpr unsigned WINDOW_HEIGHT = 600;
     constexpr unsigned WINDOW_WIDTH = 800;
+    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
@@ -116,6 +86,7 @@ int main()
         balls[i].ball.setFillColor(sf::Color(24 * i, 50, 150));
         balls[i].speed = {50.f * i, 120.f};
         balls[i].ball.setOrigin(40, 40);
+        balls[i].ball.setRadius(BALL_SIZE);
     }
 
     while (window.isOpen())
@@ -130,7 +101,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime);
+        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
         redrawFrame(window, balls);
     }
 }
