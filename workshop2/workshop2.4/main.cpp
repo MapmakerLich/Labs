@@ -8,7 +8,7 @@
 
 struct Ball
 {
-    sf::CircleShape ball{40};
+    sf::CircleShape ball;
     sf::Vector2f position;
     sf::Vector2f speed;
 };
@@ -24,7 +24,7 @@ void initGenerator(PRNG &generator)
     generator.engine.seed(seed);
 }
 
-float random_float(PRNG &generator, float minValue, float maxValue)
+float getRandomFloat(PRNG &generator, float minValue, float maxValue)
 {
     assert(minValue < maxValue);
 
@@ -33,7 +33,7 @@ float random_float(PRNG &generator, float minValue, float maxValue)
     return distribution(generator.engine);
 }
 
-unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue)
+unsigned randomInt(PRNG &generator, unsigned minValue, unsigned maxValue)
 {
     assert(minValue < maxValue);
 
@@ -52,7 +52,7 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime)
+void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
@@ -104,6 +104,7 @@ int main()
 
     constexpr unsigned WINDOW_HEIGHT = 600;
     constexpr unsigned WINDOW_WIDTH = 800;
+    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
@@ -112,9 +113,10 @@ int main()
     {
         balls[i].position = {100.f * i + 100.f, 100.f * i};
         balls[i].ball.setPosition(balls[i].position);
-        balls[i].ball.setFillColor(sf::Color(random(generator, 0, 255), random(generator, 0, 255), random(generator, 0, 255)));
-        balls[i].speed = {random_float(generator, -200.f, 200.f), random_float(generator, -200.f, 200.f)};
+        balls[i].ball.setFillColor(sf::Color(randomInt(generator, 0, 255), randomInt(generator, 0, 255), randomInt(generator, 0, 255)));
+        balls[i].speed = {getRandomFloat(generator, -200.f, 200.f), getRandomFloat(generator, -200.f, 200.f)};
         balls[i].ball.setOrigin(40, 40);
+        balls[i].ball.setRadius(BALL_SIZE);
     }
 
     while (window.isOpen())
@@ -129,7 +131,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime);
+        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
         redrawFrame(window, balls);
     }
 }
