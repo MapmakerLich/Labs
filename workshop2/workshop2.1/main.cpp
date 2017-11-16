@@ -1,11 +1,10 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
-#include <iostream>
 
 struct Ball
 {
-    sf::CircleShape ball{40};
+    sf::CircleShape ball;
     sf::Vector2f position;
     sf::Vector2f speed;
 };
@@ -20,26 +19,26 @@ void redrawFrame(sf::RenderWindow& window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime)
+void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
 
-        if ((balls[i].position.x + 80 >= 800) && (balls[i].speed.x > 0))
+        if ((balls[i].position.x + 80 >= 800)&&(balls[i].speed.x>0))
         {
             balls[i].speed.x = - balls[i].speed.x;
         }
-        if ((balls[i].position.x < 0) && (balls[i].speed.x < 0))
+        if ((balls[i].position.x < 0)&&(balls[i].speed.x<0))
         {
             balls[i].speed.x = - balls[i].speed.x;
         }
-        if ((balls[i].position.y + 80 >= 600) && (balls[i].speed.y > 0))
+        if ((balls[i].position.y + 80 >= 600)&&(balls[i].speed.y>0))
         {
             balls[i].speed.y = - balls[i].speed.y;
         }
-        if ((balls[i].position.y < 0) && (balls[i].speed.y < 0))
+        if ((balls[i].position.y < 0)&&(balls[i].speed.y<0))
         {
             balls[i].speed.y = - balls[i].speed.y;
         }
@@ -55,16 +54,18 @@ int main()
     
     constexpr unsigned WINDOW_HEIGHT = 600;
     constexpr unsigned WINDOW_WIDTH = 800;
+    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Balls striking edge");
     
     Ball balls[5];
     for (int i = 0; i<std::size(balls); ++i)
     {
-        balls[i].position = {100.f * i + 40.f, 100.f};
+        balls[i].position = {100.f * i+40.f, 100.f};
         balls[i].ball.setPosition(balls[i].position);
-        balls[i].ball.setFillColor(sf::Color(24 * i, 50, 150));
-        balls[i].speed = {24.f * i, 120.f};
+        balls[i].ball.setFillColor(sf::Color(24*i, 50, 150));
+        balls[i].speed = {24.f*i, 120.f};
+        balls[i].ball.setRadius(BALL_SIZE);
     }
 
     while (window.isOpen())
@@ -79,7 +80,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime);
+        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
         redrawFrame(window, balls);
     }
 }
