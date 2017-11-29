@@ -8,7 +8,7 @@
 
 struct Ball
 {
-    sf::CircleShape ball;
+    sf::CircleShape ball{40};
     sf::Vector2f position;
     sf::Vector2f speed;
 };
@@ -24,7 +24,7 @@ void initGenerator(PRNG &generator)
     generator.engine.seed(seed);
 }
 
-float getRandomFloat(PRNG &generator, float minValue, float maxValue)
+float random_float(PRNG &generator, float minValue, float maxValue)
 {
     assert(minValue < maxValue);
 
@@ -33,13 +33,29 @@ float getRandomFloat(PRNG &generator, float minValue, float maxValue)
     return distribution(generator.engine);
 }
 
-unsigned randomInt(PRNG &generator, unsigned minValue, unsigned maxValue)
+unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue)
 {
     assert(minValue < maxValue);
 
     std::uniform_int_distribution<unsigned> distribution(minValue, maxValue);
 
     return distribution(generator.engine);
+}
+
+sf::Color randomColor(sf::Color (&pattern)[8], PRNG &generator)
+{
+    const unsigned firstIndex = random(generator, 0, 7);
+    const unsigned secondIndex = random(generator, 0, 7);
+
+    sf::Color firstColor = pattern[firstIndex];
+    sf::Color secondColor = pattern[secondIndex];
+
+    sf::Color finalColor;
+    finalColor.r = sf::Uint8((firstColor.r + secondColor.r) / 2);
+    finalColor.g = sf::Uint8((firstColor.g + secondColor.g) / 2);
+    finalColor.b = sf::Uint8((firstColor.b + secondColor.b) / 2);
+
+    return finalColor;
 }
 
 void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
@@ -52,7 +68,7 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
+void update(Ball (&balls)[5], const float deltaTime)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
@@ -104,19 +120,26 @@ int main()
 
     constexpr unsigned WINDOW_HEIGHT = 600;
     constexpr unsigned WINDOW_WIDTH = 800;
-    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
     Ball balls[5];
+    sf::Color pattern[8];
+    pattern[0] = {0, 102, 51};
+    pattern[1] = {102, 0, 51};
+    pattern[2] = {0, 51, 102};
+    pattern[3] = {102, 51, 0};
+    pattern[4] = {51, 102, 0};
+    pattern[5] = {51, 0, 102};
+    pattern[6] = {102, 0, 0};
+    pattern[7] = {0, 51, 0};
     for (int i = 0; i < std::size(balls); ++i)
     {
-        balls[i].position = {100.f * i + 100.f, 100.f * i};
+        balls[i].position = {100.f * i + 100.f, 100.f * i + 100.f};
         balls[i].ball.setPosition(balls[i].position);
-        balls[i].ball.setFillColor(sf::Color(randomInt(generator, 0, 255), randomInt(generator, 0, 255), randomInt(generator, 0, 255)));
-        balls[i].speed = {getRandomFloat(generator, -200.f, 200.f), getRandomFloat(generator, -200.f, 200.f)};
+        balls[i].ball.setFillColor(randomColor(pattern, generator));
+        balls[i].speed = {random_float(generator, -200.f, 200.f), random_float(generator, -200.f, 200.f)};
         balls[i].ball.setOrigin(40, 40);
-        balls[i].ball.setRadius(BALL_SIZE);
     }
 
     while (window.isOpen())
@@ -131,7 +154,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
+        update(balls, deltaTime);
         redrawFrame(window, balls);
     }
 }
