@@ -6,6 +6,10 @@
 #include <cassert>
 #include <iostream>
 
+constexpr unsigned WINDOW_HEIGHT = 600;
+constexpr unsigned WINDOW_WIDTH = 800;
+constexpr unsigned BALL_SIZE = 40;
+
 struct Ball
 {
     sf::CircleShape ball{40};
@@ -68,7 +72,7 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
+void update(Ball (&balls)[5], const float deltaTime)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
@@ -118,10 +122,6 @@ int main()
     sf::Clock clock;
     initGenerator(generator);
 
-    constexpr unsigned WINDOW_HEIGHT = 600;
-    constexpr unsigned WINDOW_WIDTH = 800;
-    constexpr unsigned BALL_SIZE = 40;
-
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
     Ball balls[5];
@@ -156,7 +156,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
+        update(balls, deltaTime);
         redrawFrame(window, balls);
     }
 }
