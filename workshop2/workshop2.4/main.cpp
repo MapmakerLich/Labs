@@ -24,7 +24,7 @@ void initGenerator(PRNG &generator)
     generator.engine.seed(seed);
 }
 
-float random_float(PRNG &generator, float minValue, float maxValue)
+float randomFloat(PRNG &generator, float minValue, float maxValue)
 {
     assert(minValue < maxValue);
 
@@ -68,26 +68,26 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime)
+void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
 
-        if ((balls[i].position.x + 40 >= 800) && (balls[i].speed.x > 0))
+        if ((balls[i].position.x + BALL_SIZE >= WINDOW_WIDTH) && (balls[i].speed.x > 0))
         {
             balls[i].speed.x = -balls[i].speed.x;
         }
-        if ((balls[i].position.x - 40 < 0) && (balls[i].speed.x < 0))
+        if ((balls[i].position.x - BALL_SIZE < 0) && (balls[i].speed.x < 0))
         {
             balls[i].speed.x = -balls[i].speed.x;
         }
-        if ((balls[i].position.y + 40 >= 600) && (balls[i].speed.y > 0))
+        if ((balls[i].position.y + BALL_SIZE >= WINDOW_HEIGHT) && (balls[i].speed.y > 0))
         {
             balls[i].speed.y = -balls[i].speed.y;
         }
-        if ((balls[i].position.y - 40 < 0) && (balls[i].speed.y < 0))
+        if ((balls[i].position.y - BALL_SIZE < 0) && (balls[i].speed.y < 0))
         {
             balls[i].speed.y = -balls[i].speed.y;
         }
@@ -103,7 +103,7 @@ void update(Ball (&balls)[5], const float deltaTime)
             sf::Vector2f deltaSpeed = balls[si].speed - balls[fi].speed;
             float distance = std::sqrt(std::pow(deltaPos.x, 2) + std::pow(deltaPos.y, 2));
             float change = (((deltaPos.x * deltaSpeed.x) + (deltaPos.y * deltaSpeed.y)) / std::pow(distance, 2));
-            if (distance <= (2 * 40))
+            if (distance <= (2 * BALL_SIZE))
             {
                 balls[fi].speed = balls[fi].speed + change * deltaPos;
                 balls[si].speed = balls[si].speed - change * deltaPos;
@@ -120,6 +120,7 @@ int main()
 
     constexpr unsigned WINDOW_HEIGHT = 600;
     constexpr unsigned WINDOW_WIDTH = 800;
+    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
@@ -138,8 +139,9 @@ int main()
         balls[i].position = {100.f * i + 100.f, 100.f * i + 100.f};
         balls[i].ball.setPosition(balls[i].position);
         balls[i].ball.setFillColor(randomColor(pattern, generator));
-        balls[i].speed = {random_float(generator, -200.f, 200.f), random_float(generator, -200.f, 200.f)};
+        balls[i].speed = {randomFloat(generator, -200.f, 200.f), randomFloat(generator, -200.f, 200.f)};
         balls[i].ball.setOrigin(40, 40);
+        balls[i].ball.setRadius(BALL_SIZE);
     }
 
     while (window.isOpen())
@@ -154,7 +156,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime);
+        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
         redrawFrame(window, balls);
     }
 }
