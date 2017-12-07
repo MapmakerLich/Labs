@@ -2,6 +2,10 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 
+constexpr unsigned WINDOW_HEIGHT = 600;
+constexpr unsigned WINDOW_WIDTH = 800;
+constexpr unsigned BALL_SIZE = 40;
+
 struct Ball
 {
     sf::CircleShape ball;
@@ -19,14 +23,14 @@ void redrawFrame(sf::RenderWindow& window, Ball (&balls)[5])
     window.display();
 }
 
-void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
+void update(Ball (&balls)[5], const float deltaTime)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
 
-        if ((balls[i].position.x + 80 >= 800)&&(balls[i].speed.x>0))
+        if ((balls[i].position.x + 2 * BALL_SIZE >= WINDOW_WIDTH)&&(balls[i].speed.x>0))
         {
             balls[i].speed.x = - balls[i].speed.x;
         }
@@ -34,7 +38,7 @@ void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH
         {
             balls[i].speed.x = - balls[i].speed.x;
         }
-        if ((balls[i].position.y + 80 >= 600)&&(balls[i].speed.y>0))
+        if ((balls[i].position.y + 2 * BALL_SIZE >= WINDOW_HEIGHT)&&(balls[i].speed.y>0))
         {
             balls[i].speed.y = - balls[i].speed.y;
         }
@@ -51,10 +55,6 @@ int main()
 {
 
     sf::Clock clock;
-    
-    constexpr unsigned WINDOW_HEIGHT = 600;
-    constexpr unsigned WINDOW_WIDTH = 800;
-    constexpr unsigned BALL_SIZE = 40;
 
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Balls striking edge");
     
@@ -80,7 +80,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
+        update(balls, deltaTime);
         redrawFrame(window, balls);
     }
 }
