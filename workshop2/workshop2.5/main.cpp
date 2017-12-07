@@ -4,7 +4,6 @@
 #include <cmath>
 #include <random>
 #include <cassert>
-#include <iostream>
 
 constexpr unsigned WINDOW_HEIGHT = 600;
 constexpr unsigned WINDOW_WIDTH = 800;
