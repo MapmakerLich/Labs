@@ -143,7 +143,7 @@ void onMouseClick(const sf::Event::MouseButtonEvent &event, std::vector<Ball> &b
         sf::Vector2f ballPosition = balls[i].ball.getPosition();
         sf::Vector2f delta = mousePosition - ballPosition;
         float length = std::sqrt(std::pow(delta.x, 2) + std::pow(delta.y, 2));
-        if ((length < 2 * BALL_SIZE) && (mousePosition.x > BALL_SIZE) && (mousePosition.y > BALL_SIZE) && (mousePosition.x < WINDOW_WIDTH - BALL_SIZE) && (mousePosition.y < WINDOW_HEIGHT - BALL_SIZE))
+        if ((length <= 2 * BALL_SIZE) || (mousePosition.x <= BALL_SIZE) || (mousePosition.y <= BALL_SIZE) || (mousePosition.x >= WINDOW_WIDTH - BALL_SIZE) || (mousePosition.y >= WINDOW_HEIGHT - BALL_SIZE))
         {
             correctCreation = false;
         }
