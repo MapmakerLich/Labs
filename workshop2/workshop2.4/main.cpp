@@ -4,7 +4,6 @@
 #include <cmath>
 #include <random>
 #include <cassert>
-#include <iostream>
 
 constexpr unsigned WINDOW_HEIGHT = 600;
 constexpr unsigned WINDOW_WIDTH = 800;
@@ -12,7 +11,7 @@ constexpr unsigned BALL_SIZE = 40;
 
 struct Ball
 {
-    sf::CircleShape ball{40};
+    sf::CircleShape ball;
     sf::Vector2f position;
     sf::Vector2f speed;
 };
@@ -140,7 +139,7 @@ int main()
         balls[i].ball.setPosition(balls[i].position);
         balls[i].ball.setFillColor(randomColor(pattern, generator));
         balls[i].speed = {randomFloat(generator, -200.f, 200.f), randomFloat(generator, -200.f, 200.f)};
-        balls[i].ball.setOrigin(40, 40);
+        balls[i].ball.setOrigin(BALL_SIZE, BALL_SIZE);
         balls[i].ball.setRadius(BALL_SIZE);
     }
 
