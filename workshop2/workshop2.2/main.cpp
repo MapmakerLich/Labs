@@ -2,7 +2,10 @@
 #include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <cmath>
-#include <cassert>
+
+constexpr unsigned WINDOW_HEIGHT = 600;
+constexpr unsigned WINDOW_WIDTH = 800;
+constexpr unsigned BALL_SIZE = 40;
 
 struct Ball
 {
@@ -22,26 +25,26 @@ void redrawFrame(sf::RenderWindow &window, Ball (&balls)[5])
 }
 
 
-void update(Ball (&balls)[5], const float deltaTime, const unsigned WINDOW_WIDTH, const unsigned WINDOW_HEIGHT, const unsigned BALL_SIZE)
+void update(Ball (&balls)[5], const float deltaTime)
 {
     for (int i = 0; i < std::size(balls); ++i)
     {
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
 
-        if ((balls[i].position.x + 40 >= 800) && (balls[i].speed.x > 0))
+        if ((balls[i].position.x + BALL_SIZE >= WINDOW_WIDTH) && (balls[i].speed.x > 0))
         {
             balls[i].speed.x = -balls[i].speed.x;
         }
-        if ((balls[i].position.x - 40 < 0) && (balls[i].speed.x < 0))
+        if ((balls[i].position.x - BALL_SIZE < 0) && (balls[i].speed.x < 0))
         {
             balls[i].speed.x = -balls[i].speed.x;
         }
-        if ((balls[i].position.y + 40 >= 600) && (balls[i].speed.y > 0))
+        if ((balls[i].position.y + BALL_SIZE >= WINDOW_HEIGHT) && (balls[i].speed.y > 0))
         {
             balls[i].speed.y = -balls[i].speed.y;
         }
-        if ((balls[i].position.y - 40 < 0) && (balls[i].speed.y < 0))
+        if ((balls[i].position.y - BALL_SIZE < 0) && (balls[i].speed.y < 0))
         {
             balls[i].speed.y = -balls[i].speed.y;
         }
@@ -72,10 +75,6 @@ int main()
 
     sf::Clock clock;
 
-    constexpr unsigned WINDOW_HEIGHT = 600;
-    constexpr unsigned WINDOW_WIDTH = 800;
-    constexpr unsigned BALL_SIZE = 40;
-
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
 
     Ball balls[5];
@@ -101,7 +100,7 @@ int main()
             }
         }
 
-        update(balls, deltaTime, WINDOW_WIDTH, WINDOW_HEIGHT, BALL_SIZE);
+        update(balls, deltaTime);
         redrawFrame(window, balls);
     }
 }
