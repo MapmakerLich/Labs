@@ -60,7 +60,7 @@ void update(Ball (&balls)[5], const float deltaTime)
             sf::Vector2f deltaSpeed = balls[si].speed - balls[fi].speed;
             float distance = std::sqrt(std::pow(deltaPos.x, 2) + std::pow(deltaPos.y, 2));
             float change = (((deltaPos.x * deltaSpeed.x) + (deltaPos.y * deltaSpeed.y)) / std::pow(distance, 2));
-            if (distance <= (2 * 40))
+            if (distance <= (2 * BALL_SIZE))
             {
                 balls[fi].speed = balls[fi].speed + change * deltaPos;
                 balls[si].speed = balls[si].speed - change * deltaPos;
