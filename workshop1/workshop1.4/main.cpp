@@ -107,7 +107,10 @@ void redrawFrame(sf::RenderWindow &window, Laser &laser, Cat &cat)
 {
     window.clear(sf::Color(255, 255, 255));
     window.draw(cat.sprite);
-    window.draw(laser.sprite);
+    if (cat.position != laser.position)
+    {
+        window.draw(laser.sprite);
+    }
     window.display();
 }
 
