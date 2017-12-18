@@ -1,4 +1,4 @@
-add_executable(workshop3.2 main.cpp main.hpp)
+add_executable(workshop3.2 main.cpp ball.hpp ball.cpp numeric.cpp numeric.hpp)
 
 target_include_directories(workshop3.2 PRIVATE ${SFML_INCLUDE_DIR})
 target_compile_features(workshop3.2 PUBLIC cxx_std_17)

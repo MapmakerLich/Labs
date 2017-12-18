@@ -1,0 +1,73 @@
+#pragma once
+
+#include <SFML\Graphics.hpp>
+#include <SFML\Window.hpp>
+#include <SFML\System.hpp>
+#include <cmath>
+#include <random>
+#include <cassert>
+
+constexpr unsigned WINDOW_HEIGHT = 600;
+constexpr unsigned WINDOW_WIDTH = 800;
+constexpr unsigned BALL_SIZE = 40;
+constexpr float MAX_LIFETIME = 10.0;
+constexpr float MAX_INTERVAL_NUMBER = 10.0;
+constexpr float VIEW_MOVE_SPEED = 0.1;
+constexpr float G = 6.67;
+
+struct PRNG
+{
+    std::mt19937 engine;
+};
+
+struct Ball
+{
+    sf::CircleShape ball;
+    sf::Vector2f position;
+    sf::Vector2f speed;
+    float lifetime;
+};
+
+float randomFloat(PRNG &generator, float minValue, float maxValue);
+
+unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue);
+
+sf::Vector2f getImpulse(std::vector<Ball> &balls);
+
+float getEnergy(std::vector<Ball> &balls);
+
+sf::Color randomColor(sf::Color (&pattern)[8], PRNG &generator);
+
+void initGenerator(PRNG &generator);
+
+void createBall(sf::CircleShape &shape, sf::Color (&pattern)[8], PRNG &generator);
+
+void init(std::vector<Ball> &balls, PRNG &generator, sf::Color (&pattern)[8]);
+
+void removeDeathBalls(std::vector<Ball> &balls);
+
+bool areCloseAbsolute(float a, float b, float tolerance);
+
+bool areCloseRelative(float a, float b, float tolerance);
+
+bool areFuzzyEqual(float a, float b);
+
+bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b);
+
+void checkEdge(Ball &ball);
+
+void edgeStrike(std::vector<Ball> &balls, const float deltaTime);
+
+void ballStrike(std::vector<Ball> &balls);
+
+void update(std::vector<Ball> &balls, const float deltaTime);
+
+void checkCreation(std::vector<Ball> &balls, sf::Vector2f &mousePosition, bool &correctCreation);
+
+void onMouseClick(const sf::Event::MouseButtonEvent &event, std::vector<Ball> &balls, sf::Color (&pattern)[8], PRNG &generator, sf::RenderWindow &window);
+
+void initPattern(sf::Color (&pattern)[8]);
+
+void initView(sf::View &view);
+
+void unitedInit(sf::Color (&pattern)[8], PRNG &generator, std::vector<Ball> &balls);
