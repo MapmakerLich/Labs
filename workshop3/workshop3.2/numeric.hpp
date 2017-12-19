@@ -4,7 +4,7 @@
 
 float randomFloat(PRNG &generator, float minValue, float maxValue);
 
-unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue);
+int random(PRNG &generator, int minValue, int maxValue);
 
 sf::Vector2f getImpulse(std::vector<Ball> &balls);
 
@@ -25,3 +25,5 @@ bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b);
 void checkEdge(Ball &ball);
 
 void gravityPower(std::vector<Ball> &balls);
+
+void coulombPower(std::vector<Ball> &balls);

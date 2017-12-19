@@ -14,6 +14,7 @@ constexpr float MAX_LIFETIME = 10.0;
 constexpr float MAX_INTERVAL_NUMBER = 10.0;
 constexpr float VIEW_MOVE_SPEED = 0.1;
 constexpr float G = 6.67;
+constexpr float K = 9.0;
 
 struct PRNG
 {
@@ -26,7 +27,9 @@ struct Ball
     sf::Vector2f position;
     sf::Vector2f speed;
     float lifetime;
-    sf::Vector2f power;
+    sf::Vector2f gravityPower;
+    sf::Vector2f coulombPower;
+    int charge;
 };
 
 void createBall(sf::CircleShape &shape, sf::Color (&pattern)[8], PRNG &generator);

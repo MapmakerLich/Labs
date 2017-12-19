@@ -17,6 +17,11 @@ void init(std::vector<Ball> &balls, PRNG &generator, sf::Color (&pattern)[8])
         balls[i].ball.setPosition(balls[i].position);
         createBall(balls[i].ball, pattern, generator);
         balls[i].lifetime = 0;
+        balls[i].charge = random(generator, -1, 1);
+        if (balls[i].charge = 0)
+        {
+            balls[i].charge = -1;
+        }
     }
 }
 
@@ -55,7 +60,7 @@ void edgeStrike(std::vector<Ball> &balls, const float deltaTime)
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
         balls[i].lifetime += deltaTime;
-        balls[i].speed += balls[i].power * deltaTime;
+        balls[i].speed += (balls[i].gravityPower + balls[i].coulombPower) * deltaTime;
 
         checkEdge(balls[i]);
 
@@ -127,6 +132,11 @@ void onMouseClick(const sf::Event::MouseButtonEvent &event, std::vector<Ball> &b
         createBall(newBall.ball, pattern, generator);
         newBall.ball.setPosition(mousePosition);
         newBall.lifetime = 0;
+        newBall.charge = random(generator, -1, 1);
+        if (newBall.charge = 0)
+        {
+            newBall.charge = 1;
+        }
         balls.push_back(newBall);
     }
 }

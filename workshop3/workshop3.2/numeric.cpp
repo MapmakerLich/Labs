@@ -9,11 +9,11 @@ float randomFloat(PRNG &generator, float minValue, float maxValue)
     return distribution(generator.engine);
 }
 
-unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue)
+int random(PRNG &generator, int minValue, int maxValue)
 {
     assert(minValue < maxValue);
 
-    std::uniform_int_distribution<unsigned> distribution(minValue, maxValue);
+    std::uniform_int_distribution<int> distribution(minValue, maxValue);
 
     return distribution(generator.engine);
 }
@@ -91,14 +91,31 @@ void gravityPower(std::vector<Ball> &balls)
 {
     for (int fi = 0; fi < balls.size(); ++fi)
     {
-        balls[fi].power = {0, 0};
+        balls[fi].gravityPower = {0, 0};
         for (int si = 0; si < balls.size(); ++si)
         {
             if (si != fi)
             {
                 sf::Vector2f delta = balls[fi].position - balls[si].position;
                 float deltaLength = std::sqrt(std::pow(delta.x, 2) + std::pow(delta.y, 2));
-                balls[fi].power += delta * G * float(std::pow(10, -11)) / float(std::pow(deltaLength, 3));
+                balls[fi].gravityPower += delta * G * float(std::pow(10, -11)) / float(std::pow(deltaLength, 3));
+            }
+        }
+    }
+}
+
+void coulombPower(std::vector<Ball> &balls)
+{
+    for (int fi = 0; fi < balls.size(); ++fi)
+    {
+        balls[fi].coulombPower = {0, 0};
+        for (int si = 0; si < balls.size(); ++si)
+        {
+            if (si != fi)
+            {
+                sf::Vector2f delta = balls[fi].position - balls[si].position;
+                float deltaLength = std::sqrt(std::pow(delta.x, 2) + std::pow(delta.y, 2));
+                balls[fi].coulombPower += delta * K * float(std::pow(10, 9)) / float(std::pow(deltaLength, 3));
             }
         }
     }
