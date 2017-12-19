@@ -55,6 +55,7 @@ void edgeStrike(std::vector<Ball> &balls, const float deltaTime)
         balls[i].position = balls[i].ball.getPosition();
         balls[i].position += balls[i].speed * deltaTime;
         balls[i].lifetime += deltaTime;
+        balls[i].speed += balls[i].power * deltaTime;
 
         checkEdge(balls[i]);
 
@@ -83,6 +84,7 @@ void ballStrike(std::vector<Ball> &balls)
 
 void update(std::vector<Ball> &balls, const float deltaTime)
 {
+    gravityPower(balls);
     edgeStrike(balls, deltaTime);
 
     float oldEnergy = getEnergy(balls);
@@ -116,7 +118,7 @@ void checkCreation(std::vector<Ball> &balls, sf::Vector2f &mousePosition, bool &
 void onMouseClick(const sf::Event::MouseButtonEvent &event, std::vector<Ball> &balls, sf::Color (&pattern)[8], PRNG &generator, sf::RenderWindow &window)
 {
     bool correctCreation = true;
-    sf::Vector2f mousePosition = window.mapPixelToCoords({float(event.x), float(event.y)});
+    sf::Vector2f mousePosition = window.mapPixelToCoords({int(event.x), int(event.y)});
     checkCreation(balls, mousePosition, correctCreation);
     if (correctCreation)
     {
@@ -152,5 +154,5 @@ void unitedInit(sf::Color (&pattern)[8], PRNG &generator, std::vector<Ball> &bal
     initGenerator(generator);
     initPattern(pattern);
     init(balls, generator, pattern);
-    initView(view)
+    initView(view);
 }

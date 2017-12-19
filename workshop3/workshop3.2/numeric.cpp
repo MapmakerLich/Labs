@@ -86,3 +86,20 @@ bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b)
     bool areYEqual = areFuzzyEqual(a.y, b.y);
     return (areXEqual && areYEqual);
 }
+
+void gravityPower(std::vector<Ball> &balls)
+{
+    for (int fi = 0; fi < balls.size(); ++fi)
+    {
+        balls[fi].power = {0, 0};
+        for (int si = 0; si < balls.size(); ++si)
+        {
+            if (si != fi)
+            {
+                sf::Vector2f delta = balls[fi].position - balls[si].position;
+                float deltaLength = std::sqrt(std::pow(delta.x, 2) + std::pow(delta.y, 2));
+                balls[fi].power += delta * G * float(std::pow(10, -11)) / float(std::pow(deltaLength, 3));
+            }
+        }
+    }
+}

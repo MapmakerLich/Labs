@@ -71,9 +71,9 @@ int main()
     sf::Clock clock;
     std::vector<Ball> balls(5, Ball());
     sf::Color pattern[8];
+    sf::View view;
     unitedInit(pattern, generator, balls, view);
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Bouncing balls");
-    sf::View view;
 
     while (window.isOpen())
     {

@@ -26,33 +26,14 @@ struct Ball
     sf::Vector2f position;
     sf::Vector2f speed;
     float lifetime;
+    sf::Vector2f power;
 };
-
-float randomFloat(PRNG &generator, float minValue, float maxValue);
-
-unsigned random(PRNG &generator, unsigned minValue, unsigned maxValue);
-
-sf::Vector2f getImpulse(std::vector<Ball> &balls);
-
-float getEnergy(std::vector<Ball> &balls);
-
-sf::Color randomColor(sf::Color (&pattern)[8], PRNG &generator);
-
-void initGenerator(PRNG &generator);
 
 void createBall(sf::CircleShape &shape, sf::Color (&pattern)[8], PRNG &generator);
 
 void init(std::vector<Ball> &balls, PRNG &generator, sf::Color (&pattern)[8]);
 
 void removeDeathBalls(std::vector<Ball> &balls);
-
-bool areCloseAbsolute(float a, float b, float tolerance);
-
-bool areCloseRelative(float a, float b, float tolerance);
-
-bool areFuzzyEqual(float a, float b);
-
-bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b);
 
 void checkEdge(Ball &ball);
 
@@ -70,4 +51,4 @@ void initPattern(sf::Color (&pattern)[8]);
 
 void initView(sf::View &view);
 
-void unitedInit(sf::Color (&pattern)[8], PRNG &generator, std::vector<Ball> &balls);
+void unitedInit(sf::Color (&pattern)[8], PRNG &generator, std::vector<Ball> &balls, sf::View &view);

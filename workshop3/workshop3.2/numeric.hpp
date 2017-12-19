@@ -23,3 +23,5 @@ bool areFuzzyEqual(float a, float b);
 bool areVectorsFuzzyEqual(sf::Vector2f a, sf::Vector2f b);
 
 void checkEdge(Ball &ball);
+
+void gravityPower(std::vector<Ball> &balls);
