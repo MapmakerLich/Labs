@@ -22,8 +22,6 @@ struct Watch
     sf::Texture clockImage;
 };
 
-#include "main.hpp"
-
 void initHands(Watch &clock, sf::Vector2f windowCenter);
 
 void initDots(Watch &clock, sf::RenderWindow &window);
